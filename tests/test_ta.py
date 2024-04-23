@@ -1,20 +1,22 @@
-# ta_scheduling/tests/test_ta.py
+# tests/test_ta_class.py
 from django.test import TestCase
-from django.contrib.auth.models import User
-from scheduling.models import TA
+from scheduling.classes.ta_class import TAClass
 
 
-class TAModelTest(TestCase):
-    @classmethod
-    def setUpTestData(cls):
-        test_user = User.objects.create_user(username='testuser', password='12345')
-        TA.objects.create(user=test_user, contact_info='Test contact info')
+class TATest(TestCase):
+    def setUp(self):
+        self.ta = TAClass("TA User", "123-456-7890")
 
-    def test_ta_contact_info(self):
-        ta = TA.objects.get(id=1)
-        expected_contact_info = f'{ta.contact_info}'
-        self.assertEqual(expected_contact_info, 'Test contact info')
+    def test_get_user(self):
+        self.assertEqual(self.ta.get_user(), "TA User")
 
-    def test_ta_string_representation(self):
-        ta = TA.objects.get(id=1)
-        self.assertEqual(str(ta), ta.user.username)
+    def test_set_user(self):
+        self.ta.set_user("New TA User")
+        self.assertEqual(self.ta.get_user(), "New TA User")
+
+    def test_get_contact_info(self):
+        self.assertEqual(self.ta.get_contact_info(), "123-456-7890")
+
+    def test_set_contact_info(self):
+        self.ta.set_contact_info("987-654-3210")
+        self.assertEqual(self.ta.get_contact_info(), "987-654-3210")

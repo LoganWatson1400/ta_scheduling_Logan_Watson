@@ -43,3 +43,21 @@ class CourseAssignment(models.Model):
 
     def __str__(self):
         return f"{self.course.title} - {self.ta.user.username}"
+
+
+class ContactInfo(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    email = models.EmailField(max_length=255)
+    phone_number = models.CharField(max_length=15)
+
+    def __str__(self):
+        return f'{self.user.username} - {self.email}'
+
+
+class Assignment(models.Model):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    # Additional fields can be added here as needed
+
+    def __str__(self):
+        return f'{self.course.title} Assignment'
+    

@@ -1,20 +1,22 @@
-# ta_scheduling/tests/test_instructor.py
+# tests/test_instructor_class.py
 from django.test import TestCase
-from django.contrib.auth.models import User
-from scheduling.models import Instructor
+from scheduling.classes.instructor_class import InstructorClass
 
 
-class InstructorModelTest(TestCase):
-    @classmethod
-    def setUpTestData(cls):
-        test_user = User.objects.create_user(username='instructoruser', password='12345')
-        Instructor.objects.create(user=test_user, contact_info='Instructor contact info')
+class InstructorClassTest(TestCase):
+    def setUp(self):
+        self.instructor = InstructorClass("Instructor User", "456-789-0123")
 
-    def test_instructor_contact_info(self):
-        instructor = Instructor.objects.get(id=1)
-        expected_contact_info = f'{instructor.contact_info}'
-        self.assertEqual(expected_contact_info, 'Instructor contact info')
+    def test_get_user(self):
+        self.assertEqual(self.instructor.get_user(), "Instructor User")
 
-    def test_instructor_string_representation(self):
-        instructor = Instructor.objects.get(id=1)
-        self.assertEqual(str(instructor), instructor.user.username)
+    def test_set_user(self):
+        self.instructor.set_user("New Instructor User")
+        self.assertEqual(self.instructor.get_user(), "New Instructor User")
+
+    def test_get_contact_info(self):
+        self.assertEqual(self.instructor.get_contact_info(), "456-789-0123")
+
+    def test_set_contact_info(self):
+        self.instructor.set_contact_info("321-098-7654")
+        self.assertEqual(self.instructor.get_contact_info(), "321-098-7654")
